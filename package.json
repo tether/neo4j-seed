@@ -1,0 +1,25 @@
+{
+  "name": "neo4j-seed",
+  "version": "1.0.0",
+  "description": "Seed neo4j databse from a folder",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tether/neo4j-seed.git"
+  },
+  "keywords": [
+    "neo4j",
+    "database",
+    "seed",
+    "graph"
+  ],
+  "author": "Olivier Wietrich, Petrofeed Inc",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tether/neo4j-seed/issues"
+  },
+  "homepage": "https://github.com/tether/neo4j-seed#readme"
+}
