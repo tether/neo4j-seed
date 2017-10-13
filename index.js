@@ -6,6 +6,13 @@ const fs = require('fs')
 
 
 /**
+ * Expose seed tool.
+ */
+
+module.exports = seed
+
+
+/**
  * Read foler and execute queries contained in it.
  *
  * @param {String} folder
@@ -13,8 +20,9 @@ const fs = require('fs')
  * @api public
  */
 
-module.exports = (folder, session) => {
-
+function seed (folder, session) {
+  // @note could read seed.json (to set order)
+  walk(folder)
 }
 
 
@@ -34,7 +42,9 @@ function walk (folder) {
       } else {
         files.map(file => {
           fs.stat(folder + '/' + file, (err, stats) => {
-            
+            if (stats.isFile()) {
+              console.log('file:', file)
+            }
           })
         })
       }

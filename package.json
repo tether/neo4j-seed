@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/tether/neo4j-seed/issues"
   },
-  "homepage": "https://github.com/tether/neo4j-seed#readme"
+  "homepage": "https://github.com/tether/neo4j-seed#readme",
+  "dependencies": {
+    "neo4j-driver": "^1.4.1"
+  }
 }
