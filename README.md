@@ -4,22 +4,43 @@
 [![Downloads](https://img.shields.io/npm/dm/neo4j-seed.svg)](http://npm-stat.com/charts.html?package=neo4j-seed)
 [![guidelines](https://tether.github.io/contribution-guide/badge-guidelines.svg)](https://github.com/tether/contribution-guide)
 
-Seed Neo4j database from a folder.
+Seed [Neo4j database](https://neo4j.com/) from a folder.
+* **Recursive**: Recursively traverse a folder and execute queries contained in files (see [example](https://github.com/tether/neo4j-seed/tree/master/example))
+* **Command line**: Use this module from the command line to quickly seed or erase your database.
+
 
 ## Usage
 
+### Programmatic
+
 ```js
 const seed = require('neo4j-seed')
+// look for every file in mydebseed and execute queries
 seed(__dirname + '/mydbseed')
 ```
 
 A session is automatically created from the official [neo4j javascript driver](https://github.com/neo4j/neo4j-javascript-driver) but it is possible to change credentials and database url through the `NEO4J_BOLT_URL`, `NEO4J_BOLT_USER` and `NEO4J_BOLT_PASSWORD` environment variables.
 
 
+### Command line
+
+This module is also available from the command line.
+
+```shell
+# seed database from folder called mydbseed
+$ neo4j-seed mydbseed
+
+
+# erase database]
+$ neo4j-seed -r
+```
+
+Environment variables are automatically read from a `.env` file in order to set up your db credentials.
+
 ## Installation
 
 ```shell
-npm install neo4j-seed --save
+npm install neo4j-seed -g
 ```
 
 [![NPM](https://nodei.co/npm/neo4j-seed.png)](https://nodei.co/npm/neo4j-seed/)
