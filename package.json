@@ -1,6 +1,6 @@
 {
   "name": "neo4j-seed",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Seed neo4j database from a folder",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
   "homepage": "https://github.com/tether/neo4j-seed#readme",
   "dependencies": {
     "chalk": "^2.1.0",
+    "dotenv": "^4.0.0",
     "minimist": "^1.2.0",
     "neo4j-driver": "^1.4.1"
   }
