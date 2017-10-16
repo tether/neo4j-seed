@@ -11,13 +11,14 @@ const chalk = require('chalk')
  * Create neo4j session driver.
  */
 
-const session = neo4j.driver(
+const driver = neo4j.driver(
   process.env.NEO4J_BOLT_URL || "bolt://localhost",
   neo4j.auth.basic(
     process.env.NEO4J_BOLT_USER || "neo4j",
     process.env.NEO4J_BOLT_PASSWORD || "neo4j"
   )
-).session()
+)
+const session = driver.session()
 
 
 /**
@@ -31,13 +32,12 @@ module.exports = seed
  * Read foler and execute queries contained in it.
  *
  * @param {String} folder
- * @param {Object?} session (neo4j driver session)
  * @api public
  */
 
-function seed (folder, session) {
+function seed (folder) {
   // @note could read seed.json (to set order)
-  walk(folder)
+  walk(folder).then(exit, exit)
 }
 
 
@@ -52,61 +52,12 @@ function seed (folder, session) {
 function walk (folder) {
   return new Promise((resolve, reject) => {
     fs.readdir(folder, (err, files) => {
-      if (err) {
-        reject()
-      } else {
-        files.map(file => {
-          const path = folder + '/' + file
-          fs.stat(path, (err, stats) => {
-            if (stats.isFile()) {
-              fs.readFile(path, (err, content) => {
-                session.run(content.toString())
-                  .subscribe({
-                    onError(err) {
-                      console.log(chalk.red('error'), err.message)
-                    },
-                    onCompleted() {
-                      console.log(chalk.green('completed'), file)
-                    }
-                  })
-              })
-            }
-          })
-        })
-      }
+      if (err) reject()
+      else Promise.all(files.map(file => run(folder, file))).then(resolve, reject)
     })
   })
 }
 
-
-// function walk (folder) {
-//   return new Promise((resolve, reject) => {
-//     fs.readdir(folder, (err, files) => {
-//       if (err) {
-//         reject()
-//       } else {
-//         files.map(file => {
-//           const path = folder + '/' + file
-//           fs.stat(path, (err, stats) => {
-//             if (stats.isFile()) {
-//               fs.readFile(path, (err, content) => {
-//                 session.run(content.toString())
-//                   .subscribe({
-//                     onError(err) {
-//                       console.log(chalk.red('error'), err.message)
-//                     },
-//                     onCompleted() {
-//                       console.log(chalk.green('completed'), file)
-//                     }
-//                   })
-//               })
-//             }
-//           })
-//         })
-//       }
-//     })
-//   })
-// }
 
 /**
  * Run queries for a given file.
@@ -116,7 +67,7 @@ function walk (folder) {
  * @api private
  */
 
-function run (folfer, file) {
+function run (folder, file) {
   const path = folder + '/' + file
   return new Promise((resolve, reject) => {
     fs.stat(path, (err, stats) => {
@@ -124,17 +75,16 @@ function run (folfer, file) {
         fs.readFile(path, (err, content) => {
           if (err) reject()
           else {
-            session.run(content.toString())
-              .subscribe({
-                onError(err) {
-                  console.log(chalk.red('error'), err.message)
-                  reject()
-                },
-                onCompleted() {
-                  console.log(chalk.green('completed'), file)
-                  resolve()
-                }
-              })
+            session.run(content.toString()).subscribe({
+              onError(err) {
+                console.log(chalk.red('error'), err.message)
+                reject()
+              },
+              onCompleted() {
+                console.log(chalk.green('completed'), file)
+                resolve()
+              }
+            })
           }
         })
       } else {
@@ -142,4 +92,15 @@ function run (folfer, file) {
       }
     })
   })
+}
+
+
+/**
+ * Close driver and exit process.
+ *
+ * @api private
+ */
+
+function exit () {
+  driver.close()
 }
