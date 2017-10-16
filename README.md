@@ -22,6 +22,8 @@ seed(__dirname + '/mydbseed')
 
 ### Command line
 
+This module is also available from the command line.
+
 ```shell
 # seed database from folder called mydbseed
 $ neo4j-seed mydbseed
@@ -31,7 +33,7 @@ $ neo4j-seed mydbseed
 $ neo4j-seed -r
 ```
 
-Environment variables are automatically read from a `.env` file in order to set up your db credentials.
+In order to change your database credentials, simply create a `.env` file at the root of your project and/or set the `NEO4J_BOLT_URL`, `NEO4J_BOLT_USER` and `NEO4J_BOLT_PASSWORD` variables to match your databsae.
 
 ## Installation
 
