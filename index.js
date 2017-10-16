@@ -81,12 +81,14 @@ function run (folder, file) {
                 reject()
               },
               onCompleted() {
-                console.log(chalk.green('completed'), file)
+                console.log(chalk.green('completed'), path)
                 resolve()
               }
             })
           }
         })
+      } else if (stats.isDirectory()) {
+        walk(path).then(resolve, reject)
       } else {
         reject()
       }
