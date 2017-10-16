@@ -1,0 +1,2 @@
+CREATE (:Email {address: 'john@doe.com'})
+CREATE (:Email {address: 'paull@smith.com'})

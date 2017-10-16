@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/tether/neo4j-seed#readme",
   "dependencies": {
+    "chalk": "^2.1.0",
     "neo4j-driver": "^1.4.1"
   }
 }
