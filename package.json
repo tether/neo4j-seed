@@ -1,7 +1,7 @@
 {
   "name": "neo4j-seed",
   "version": "1.0.0",
-  "description": "Seed neo4j databse from a folder",
+  "description": "Seed neo4j database from a folder",
   "main": "index.js",
   "scripts": {
     "test": "node example/index.js"
