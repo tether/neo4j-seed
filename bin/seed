@@ -38,6 +38,6 @@ if (argv.r) {
     }
   })
 } else {
-  const dir = argv._[0]
+  const dir = argv._[0] || 'seed'
   seed(process.cwd() + '/' + dir)
 }
