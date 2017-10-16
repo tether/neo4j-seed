@@ -19,12 +19,8 @@ const seed = require('neo4j-seed')
 seed(__dirname + '/mydbseed')
 ```
 
-A session is automatically created from the official [neo4j javascript driver](https://github.com/neo4j/neo4j-javascript-driver) but it is possible to change credentials and database url through the `NEO4J_BOLT_URL`, `NEO4J_BOLT_USER` and `NEO4J_BOLT_PASSWORD` environment variables.
-
 
 ### Command line
-
-This module is also available from the command line.
 
 ```shell
 # seed database from folder called mydbseed
