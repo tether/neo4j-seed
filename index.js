@@ -3,29 +3,7 @@
  */
 
 const fs = require('fs')
-const neo4j = require('neo4j-driver').v1
 const chalk = require('chalk')
-
-
-/**
- * Create neo4j session driver.
- */
-
-const driver = neo4j.driver(
-  process.env.NEO4J_BOLT_URL || "bolt://localhost",
-  neo4j.auth.basic(
-    process.env.NEO4J_BOLT_USER || "neo4j",
-    process.env.NEO4J_BOLT_PASSWORD || "neo4j"
-  )
-)
-const session = driver.session()
-
-
-/**
- * Expose seed tool.
- */
-
-module.exports = seed
 
 
 /**
@@ -34,11 +12,13 @@ module.exports = seed
  * @param {String} folder
  * @api public
  */
-
-function seed (folder) {
+module.exports = (folder, driver) => {
+  const exit = () => driver.close()
   // @note could read seed.json (to set order)
-  walk(folder).then(exit, exit)
+  walk(folder, driver.session())
+    .then(exit, exit)
 }
+
 
 
 /**
@@ -49,11 +29,11 @@ function seed (folder) {
  * @api private
  */
 
-function walk (folder) {
+function walk (folder, session) {
   return new Promise((resolve, reject) => {
     fs.readdir(folder, (err, files) => {
       if (err) reject()
-      else Promise.all(files.map(file => run(folder, file))).then(resolve, reject)
+      else Promise.all(files.map(file => run(folder, file, session))).then(resolve, reject)
     })
   })
 }
@@ -67,7 +47,7 @@ function walk (folder) {
  * @api private
  */
 
-function run (folder, file) {
+function run (folder, file, session) {
   const path = folder + '/' + file
   return new Promise((resolve, reject) => {
     fs.stat(path, (err, stats) => {
@@ -88,21 +68,10 @@ function run (folder, file) {
           }
         })
       } else if (stats.isDirectory()) {
-        walk(path).then(resolve, reject)
+        walk(path, session).then(resolve, reject)
       } else {
         reject()
       }
     })
   })
-}
-
-
-/**
- * Close driver and exit process.
- *
- * @api private
- */
-
-function exit () {
-  driver.close()
 }
