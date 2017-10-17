@@ -4,36 +4,31 @@
 [![Downloads](https://img.shields.io/npm/dm/neo4j-seed.svg)](http://npm-stat.com/charts.html?package=neo4j-seed)
 [![guidelines](https://tether.github.io/contribution-guide/badge-guidelines.svg)](https://github.com/tether/contribution-guide)
 
-Seed [Neo4j database](https://neo4j.com/) from a folder.
-* **Recursive**: Recursively traverse a folder and execute queries contained in files (see [example](https://github.com/tether/neo4j-seed/tree/master/example))
-* **Command line**: Use this module from the command line to quickly seed or erase your database.
+Seed [Neo4j database](https://neo4j.com/) from a folder containing cypher queries (see [example](https://github.com/tether/neo4j-seed/tree/master/example))
 
 
 ## Usage
 
-### Programmatic
-
 ```js
 const seed = require('neo4j-seed')
+const neo4j = require('neo4j-driver').v1
+
+
+// default beo4j driver
+const driver = graph.driver(
+  'bolt://localhost',
+  graph.auth.basic(
+    'neo4j',
+    'neo4j'
+  )
+)
+
+
 // look for every file in mydebseed and execute queries
-seed(__dirname + '/mydbseed')
+seed(__dirname + '/mydbseed', driver)
 ```
 
 
-### Command line
-
-This module is also available from the command line.
-
-```shell
-# seed database from folder called mydbseed
-$ neo4j-seed mydbseed
-
-
-# erase database]
-$ neo4j-seed -r
-```
-
-In order to change your database credentials, simply create a `.env` file at the root of your project and/or set the `NEO4J_BOLT_URL`, `NEO4J_BOLT_USER` and `NEO4J_BOLT_PASSWORD` variables to match your databsae.
 
 ## Installation
 
